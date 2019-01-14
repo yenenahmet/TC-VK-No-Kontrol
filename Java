@@ -1,0 +1,42 @@
+// İnternet teki fonksiyonların uzun uzadıya yazılması sebebiyle yazılmıştır . 
+
+
+
+private  boolean isValidTCN(@NonNull String value){ // 01234567891
+		final int charAt10 = Character.digit(value.charAt(10),10);
+		if(value.length() == 11 && !value.substring(0,1).equals("0") && charAt10 % 2 ==0 ){
+			int singleDigits =0;
+			int doubleDigits =0;
+			for(int i =0 ;i <9; i++){
+				if(i %2 ==0){ // tekler 13579
+					singleDigits += Character.digit(value.charAt(i),10);
+				}else{ // çiftler 2468
+					doubleDigits += Character.digit(value.charAt(i),10) ;
+				}
+			}
+			final int totalDigitCalculation = ((singleDigits *7) - doubleDigits) % 10 ;
+			final int charAt9 = Character.digit(value.charAt(9),10);
+			if(totalDigitCalculation == charAt9){
+				return (singleDigits+ doubleDigits + charAt9) % 10 == charAt10;
+			}
+		}
+		return false;
+	}
+
+	private  boolean isValidVKN(@NonNull String value){
+		if(value.length()==10){
+			int totalCalculate =0;
+			for(int i=0;i<9;i++){
+				final int charti = Character.digit(value.charAt(i),10);
+				int calculate = (charti +9 -i) %10;
+				if(calculate != 9){
+					final int math = (int) Math.pow(2,(9-i));
+					calculate = (calculate * math) %9;
+				}
+				totalCalculate += calculate;
+			}
+			final int totalModule = (10 - (totalCalculate %10))%10;
+			return totalModule == Character.digit(value.charAt(9),10);
+		}
+		return false;
+	}
